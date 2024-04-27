@@ -1,6 +1,9 @@
 package proyect.app.Model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.util.Objects;
@@ -9,8 +12,11 @@ import java.util.Objects;
 public class Url {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(length = 25, nullable = false)
     private String randomId;
+    @Column(columnDefinition = "TEXT")
     private String url;
 
     public Url(String randomId, String url) {
@@ -21,11 +27,11 @@ public class Url {
     public Url() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

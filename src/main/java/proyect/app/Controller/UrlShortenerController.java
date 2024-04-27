@@ -18,6 +18,8 @@ public class UrlShortenerController {
 
         String response = shortener.shorten(longUrl);
 
+        System.out.println("response ->"+ response);
+
         return "Success";
     }
 }
