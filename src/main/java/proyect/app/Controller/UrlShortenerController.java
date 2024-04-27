@@ -11,15 +11,16 @@ public class UrlShortenerController {
     ShortenerSerivice shortener;
 
     @GetMapping("/{id}")
-    public String getUrl(@PathVariable String id) {return ""; }
+    public String getUrl(@PathVariable String id) {
+        String response = shortener.page(id);
+        System.out.println("response -> "+ response);
+        return response;
+    }
 
     @PostMapping("/shorten")
     public String crate(@RequestBody String longUrl) {
-
         String response = shortener.shorten(longUrl);
-
-        System.out.println("response ->"+ response);
-
-        return "Success";
+        System.out.println("response -> "+ response);
+        return response;
     }
 }

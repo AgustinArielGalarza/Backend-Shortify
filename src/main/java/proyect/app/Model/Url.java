@@ -24,6 +24,12 @@ public class Url {
         this.url = url;
     }
 
+    public Url(Long id, String randomId, String url) {
+        this.id = id;
+        this.randomId = randomId;
+        this.url = url;
+    }
+
     public Url() {
     }
 
