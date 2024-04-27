@@ -1,2 +1,2 @@
-# Shortify
-Shortify is an app developed to shorten URLs
+# Backend Shortify
+Backend Shortify is an API developed to shorten URLs
