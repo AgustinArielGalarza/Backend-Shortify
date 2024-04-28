@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import proyect.app.Handler.ResponseHandler;
 import proyect.app.Model.Url;
 import proyect.app.Repository.IUrlJpaRepository;
 import proyect.app.Service.Interface.ShortenerInterface;
@@ -20,11 +22,11 @@ public class ShortenerSerivice implements ShortenerInterface {
     private String urlBase;
 
     @Override
-    public String shorten(String urlRequest) {
+    public ResponseHandler<String> shorten(String urlRequest) {
         String uniqueID = generateUniqueID();
         Url url = new Url(uniqueID, urlRequest);
         repo.save(url);
-        return urlBase + uniqueID;
+        return new ResponseHandler<>(HttpStatus.CREATED.value(), "URL acortada correctamente",urlBase + uniqueID, 1);
     }
 
     @Override
