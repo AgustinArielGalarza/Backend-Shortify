@@ -11,9 +11,15 @@ import proyect.app.Model.Url;
 import proyect.app.Repository.IUrlJpaRepository;
 import proyect.app.Service.Interface.ShortenerInterface;
 import java.util.UUID;
+import java.util.logging.Logger;
 
+/**
+ * Service where the main logic occurs implementing ShortenerInterface
+ */
 @Service
 public class ShortenerSerivice implements ShortenerInterface {
+
+    private static final Logger logger = Logger.getLogger(ShortenerSerivice.class.getName());
 
     @Autowired
     IUrlJpaRepository repo;
@@ -21,16 +27,21 @@ public class ShortenerSerivice implements ShortenerInterface {
     @Value("${url.base.response}")
     private String urlBase;
 
+
     @Override
     public ResponseHandler<String> shorten(String urlRequest) {
+        logger.info("ShortenerSerivice - shorten -  request: " + urlRequest);
         String uniqueID = generateUniqueID();
         Url url = new Url(uniqueID, urlRequest);
         repo.save(url);
-        return new ResponseHandler<>(HttpStatus.CREATED.value(), "URL acortada correctamente",urlBase + uniqueID, 1);
+        ResponseHandler<String> responseHandler = new ResponseHandler<>(HttpStatus.CREATED.value(), "URL acortada correctamente",urlBase + uniqueID, 1);
+        logger.info("ShortenerSerivice - shorten -  response: " + responseHandler);
+        return responseHandler;
     }
 
     @Override
-    public String page(String urlRequest) {
+    public ResponseHandler<String> page(String urlRequest) {
+        logger.info("ShortenerSerivice - page -  request: " + urlRequest);
         Url url;
         String urlJson = "";
         try {
@@ -39,11 +50,17 @@ public class ShortenerSerivice implements ShortenerInterface {
             JsonNode jsonNode = objectMapper.readTree(url.getUrl());
             urlJson = jsonNode.get("url").asText();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe("Error al obtener el url: " + e.getMessage());
+            return new ResponseHandler<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error al obtener el url: " + e.getMessage());
         }
-        return urlJson;
+        ResponseHandler<String> responseHandler = new ResponseHandler<>(HttpStatus.CREATED.value(), "URL encontrada", urlJson, 1);
+        logger.info("ShortenerSerivice - page -  response: " + responseHandler);
+        return responseHandler;
     }
 
+        /**
+        * This function returns a short random string that will be used as the id
+        */
         private String generateUniqueID() {
             UUID uuid = UUID.randomUUID();
             return uuid.toString().replace("-", "").substring(0, 8);

@@ -1,5 +1,9 @@
 package proyect.app.Handler;
 
+/**
+ * Class developed to customize the type of response
+ * @param <T> String by url
+ */
 public class ResponseHandler<T> {
     private int status;
     private String message;
@@ -8,6 +12,11 @@ public class ResponseHandler<T> {
 
 
     public ResponseHandler() {
+    }
+
+    public ResponseHandler(int status, String message) {
+        this.status = status;
+        this.message = message;
     }
 
     public ResponseHandler(int status, String message, T data, int total) {

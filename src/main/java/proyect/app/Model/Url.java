@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 
 import java.util.Objects;
 
+/**
+ *Entity used with hibernate to generate the table and apply ORM.
+ */
 @Entity
 public class Url {
 
